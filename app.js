@@ -2,7 +2,7 @@ const postsContainer = document.getElementById("post-container"),
   loading = document.querySelector(".loader"),
   filter = document.getElementById("filter");
 
-let limit = 3,
+let limit = 4,
   page = 1;
 
 // fetch posts from API
@@ -35,5 +35,27 @@ async function showPosts() {
   });
 }
 
+// show loader and fetch more posts
+function showLoading() {
+  loading.classList.add("show");
+
+  setTimeout(() => {
+    loading.classList.remove("show");
+
+    setTimeout(() => {
+      page++;
+      showPosts();
+    });
+  }, 2000);
+}
+
 // show initial posts
 showPosts();
+
+window.addEventListener("scroll", () => {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+    showLoading();
+  }
+});
